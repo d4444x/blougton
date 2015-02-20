@@ -19,7 +19,6 @@ def update_values(keys, values, _id):
     return db.save(new)
 
 
-
 def add_revision(content, message_to_save_with, _id):
     to_append = {"content":content,"commit_message":message_to_save_with,"time":time.time()}
     blog = get_blog_entry(_id)
@@ -48,6 +47,12 @@ def get_id(url):
     for row in db.query(map_fun):
         return row.key
 
+def get_published():
+    map_fun = "function(doc) {if (doc.published == 'true')emit(doc._id, null);}"
+    ids = []
+    for row in db.query(map_fun):
+        ids.append(row.key)
+    return ids
 
 def list_blogs_all():
     attrs = ["title", "tags", "time","revisions","_id"]

@@ -38,6 +38,10 @@ def get_blog_post(url):
         return "404"
 
 
+@app.route("/blogs")
+def get_blogs():
+    return str(get_published())
+
 @app.route("/save_post", methods=["POST"])
 def save_post():
     req = {}
