@@ -55,7 +55,7 @@ def get_published():
     return ids
 
 def list_blogs_all():
-    attrs = ["title", "tags", "time","revisions","_id"]
+    attrs = ["title", "tags", "time","revisions","_id","published"]
     return list_blog_info_from_tags(attrs)
 
 def list_blogs_meta():

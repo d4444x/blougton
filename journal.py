@@ -40,7 +40,23 @@ def get_blog_post(url):
 
 @app.route("/blogs")
 def get_blogs():
-    return str(get_published())
+    entries = []
+    for id in get_published():
+        entries.append(db[id])
+    for entry in entries:
+        entry["pretty_time"] = time.strftime("%m/%d/%y %M:%S",time.gmtime(entry["time"]))
+    if len(entries) == 0:
+        return "No published blogs"
+    return render_template("blogs.html", entries = entries)
+
+@app.route("/delete", methods=["POST"])
+def delete():
+    id = request.form["id"]
+    print "BEFORE"
+    print id
+    print "AFTER"
+    del db[id]
+    return "deleted!"
 
 @app.route("/save_post", methods=["POST"])
 def save_post():
@@ -57,6 +73,7 @@ def save_post():
         return str(True)
     id = req["id"]
     req.pop("id")
+    req["time"] = time.time()
     keys = []
     values = []
     for k in req:
